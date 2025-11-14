@@ -1,6 +1,6 @@
 ﻿namespace Annonssystem.Models
 {
-    public class adForList
+    public class adForListDetails
     {
         public int ad_id { get; set; }
         public string ad_rubrik { get; set; }

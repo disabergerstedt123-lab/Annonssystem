@@ -18,7 +18,7 @@ namespace Annonssystem.Controllers
         {
             List<adDetails> adList = new List<adDetails>();
 
-            List<adForList> adsForList = new List<adForList>();
+            List<adForListDetails> adsForList = new List<adForListDetails>();
 
             adList = adMethods.GetAllAds(out string errormsg);
 
@@ -30,7 +30,7 @@ namespace Annonssystem.Controllers
 
                     annonsor = annonsorMethods.GetOneAnnonsor(adList[i].ad_an_orgNr.Value, out string annonsorErrormsg);
 
-                    adForList adForList = new adForList
+                    adForListDetails adForList = new adForListDetails
                     {
                         ad_id = adList[i].ad_id,
                         ad_rubrik = adList[i].ad_rubrik,
