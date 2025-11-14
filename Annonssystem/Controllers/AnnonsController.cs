@@ -1,5 +1,7 @@
 ﻿using Annonssystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+
 
 //HEJ DISA
 namespace Annonssystem.Controllers
@@ -15,8 +17,14 @@ namespace Annonssystem.Controllers
             annonsorMethods = new annonsorMethods(configuration);
         }
 
-        public IActionResult VisaAnnonser()
+        public async Task<IActionResult> VisaAnnonserAsync()
         {
+
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("http://localhost:5072/");
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
             List<adDetails> adList = new List<adDetails>();
 
             List<adForListDetails> adsForList = new List<adForListDetails>();
@@ -45,6 +53,31 @@ namespace Annonssystem.Controllers
 
                     adsForList.Add(adForList);
                 }
+                else if (adList[i].ad_pr_preNr != null)
+                {
+                    HttpResponseMessage response = await httpClient.GetAsync($"Prenumeranter/prenumerant/{adList[i].ad_pr_preNr}");
+
+                    if(response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        PrenumerantDetails prenumerant = JsonConvert.DeserializeObject<PrenumerantDetails>(apiResponse);
+
+                        adForListDetails adForList = new adForListDetails
+                        {
+                            ad_id = adList[i].ad_id,
+                            ad_rubrik = adList[i].ad_rubrik,
+                            ad_innehall = adList[i].ad_innehall,
+                            ad_pris = adList[i].ad_pris,
+                            ad_annonsPris = adList[i].ad_annonsPris,
+                            ad_pr_preNr = adList[i].ad_pr_preNr,
+                            an_namn = prenumerant.pr_namn,
+                            an_teleNr = prenumerant.pr_teleNr
+                        };
+
+                        adsForList.Add(adForList);
+                    }
+                }
+
             }
 
 
