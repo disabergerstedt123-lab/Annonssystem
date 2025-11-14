@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Annonssystem.Models.adForList>
+
+@{
+    ViewData["Title"] = "VisaAnnonser";
+}
+
+<h1>Visa Annonser</h1>
+
+@* <p>
+    <a asp-action="Create">Create New</a>
+</p> *@
+
+<h4>Företag</h4>
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>
+                Rubrik
+            </th>
+            <th>
+                Innehåll
+            </th>
+            <th>
+                Pris
+            </th>
+            <th>
+                Annonspris
+            </th>
+            <th>
+                Företag
+            </th>
+            <th>
+                Telefonnummer
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                @if(item.ad_an_orgNr != null)
+                {
+                    
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ad_rubrik)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ad_innehall)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ad_pris)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ad_annonsPris)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.an_namn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.an_teleNr)
+                    </td>
+                }
+
+        </tr>
+}
+    </tbody>
+</table>
+<br />
+<br />
+
+<h4>Prenumeranter</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Rubrik
+            </th>
+            <th>
+                Innehåll
+            </th>
+            <th>
+                Pris
+            </th>
+            <th>
+                Annonspris
+            </th>
+            <th>
+                Prenumerant
+            </th>
+            <th>
+                Telefonnummer
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (item.ad_pr_preNr != null)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ad_rubrik)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ad_innehall)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ad_pris)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ad_annonsPris)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.an_namn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.an_teleNr)
+                    </td>
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>
