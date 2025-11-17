@@ -113,8 +113,14 @@ namespace Annonssystem.Controllers
         [HttpPost]
         public IActionResult SkapaForetag(annonsorDetails annonsor)
         {
-            annonsorMethods.createAnnonsor(annonsor, out string errormsg);
-            return RedirectToAction("ValjKundTyp");
+            annonsorDetails annonsorFinns = annonsorMethods.GetOneAnnonsor(annonsor.an_orgNr, out string errormsg);
+
+            if(annonsorFinns == null)
+            {
+                annonsorMethods.createAnnonsor(annonsor, out string createErrormsg);
+            }
+            
+            return RedirectToAction("ValjKundTyp", new {ornNr = annonsor.an_orgNr});
         }
     }
 }
