@@ -1,0 +1,91 @@
+﻿@model Annonssystem.Models.annonsorDetails
+
+@{
+    ViewData["Title"] = "SkapaForetag";
+}
+
+<h1>SkapaForetag</h1>
+
+<h4>annonsorDetails</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SkapaForetag">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="an_orgNr" class="control-label">
+                    Organisationsnummer
+                    </label>
+                <input asp-for="an_orgNr" class="form-control" />
+                <span asp-validation-for="an_orgNr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="an_namn" class="control-label">
+                    Namn
+                    </label>
+                <input asp-for="an_namn" class="form-control" />
+                <span asp-validation-for="an_namn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="an_teleNr" class="control-label">
+                    Telefonnummer
+                    </label>
+                <input asp-for="an_teleNr" class="form-control" />
+                <span asp-validation-for="an_teleNr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="an_utAdress" class="control-label">
+                    Utdelningsadress
+                    </label>
+                <input asp-for="an_utAdress" class="form-control" />
+                <span asp-validation-for="an_utAdress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="an_postNr" class="control-label">
+                    Postnummer
+                    </label>
+                <input asp-for="an_postNr" class="form-control" />
+                <span asp-validation-for="an_postNr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="an_ort" class="control-label">
+                    Postort 
+                    </label>
+                <input asp-for="an_ort" class="form-control" />
+                <span asp-validation-for="an_ort" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="an_faktAdress" class="control-label">
+                    Faktureringsadress
+                </label>
+                <input asp-for="an_faktAdress" class="form-control" />
+                <span asp-validation-for="an_faktAdress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="an_faktPostNr" class="control-label">
+                    Faktureringspostnummer
+                </label>
+                <input asp-for="an_faktPostNr" class="form-control" />
+                <span asp-validation-for="an_faktPostNr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="an_faktOrt" class="control-label">
+                    Faktureringsort
+                </label>
+                <input asp-for="an_faktOrt" class="form-control" />
+                <span asp-validation-for="an_faktOrt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="VisaAnnonser">Avbryt</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

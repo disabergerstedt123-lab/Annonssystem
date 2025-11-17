@@ -67,6 +67,41 @@ namespace Annonssystem.Models
             }
         }
 
-     
+        public annonsorDetails createAnnonsor(annonsorDetails annonsor, out string errormsg)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(_connectionstring))
+            {
+                String sqlQuery = "INSERT INTO tbl_annonsorer (an_orgNr, an_namn, an_teleNr, an_utAdress, an_postNr, an_ort, an_faktAdress, an_faktPostNr, an_faktOrt) " +
+                                  "VALUES (@an_orgNr, @an_namn, @an_teleNr, @an_utAdress, @an_postNr, @an_ort, @an_faktAdress, @an_faktPostNr, @an_faktOrt)";
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@an_orgNr", annonsor.an_orgNr);
+                sqlCommand.Parameters.AddWithValue("@an_namn", annonsor.an_namn);
+                sqlCommand.Parameters.AddWithValue("@an_teleNr", annonsor.an_teleNr);
+                sqlCommand.Parameters.AddWithValue("@an_utAdress", annonsor.an_utAdress);
+                sqlCommand.Parameters.AddWithValue("@an_postNr", annonsor.an_postNr);
+                sqlCommand.Parameters.AddWithValue("@an_ort", annonsor.an_ort);
+                sqlCommand.Parameters.AddWithValue("@an_faktAdress", annonsor.an_faktAdress);
+                sqlCommand.Parameters.AddWithValue("@an_faktPostNr", annonsor.an_faktPostNr);
+                sqlCommand.Parameters.AddWithValue("@an_faktOrt", annonsor.an_faktOrt);
+                try
+                {
+                    sqlConnection.Open();
+                    sqlCommand.ExecuteNonQuery();
+                    errormsg = string.Empty;
+                    return annonsor;
+                }
+                catch (Exception ex)
+                {
+                    errormsg = ex.Message;
+                    return annonsor;
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+        }
+
+
     }
 }

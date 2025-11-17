@@ -31,9 +31,9 @@ namespace Annonssystem.Controllers
 
             adList = adMethods.GetAllAds(out string errormsg);
 
-            for(int i = 0; i < adList.Count; i++)
+            for (int i = 0; i < adList.Count; i++)
             {
-                if(adList[i].ad_an_orgNr != null)
+                if (adList[i].ad_an_orgNr != null)
                 {
                     annonsorDetails annonsor = new annonsorDetails();
 
@@ -57,7 +57,7 @@ namespace Annonssystem.Controllers
                 {
                     HttpResponseMessage response = await httpClient.GetAsync($"Prenumeranter/prenumerant/{adList[i].ad_pr_preNr}");
 
-                    if(response.IsSuccessStatusCode)
+                    if (response.IsSuccessStatusCode)
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         PrenumerantDetails prenumerant = JsonConvert.DeserializeObject<PrenumerantDetails>(apiResponse);
@@ -82,6 +82,39 @@ namespace Annonssystem.Controllers
 
 
             return View(adsForList);
+        }
+        [HttpGet]
+        public IActionResult ValjKundTyp()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult valjTyp(string kundTyp, string prenumerantId)
+        {
+            if (kundTyp == "Prenumerant")
+            {
+                return RedirectToAction("SkapaAnnons", new { preNr = prenumerantId });
+            }
+            else if (kundTyp == "Foretag")
+            {
+                return RedirectToAction("SkapaForetag");
+            }
+            else
+            {
+                return RedirectToAction("ValjKundTyp");
+            }
+        }
+        [HttpGet]
+        public IActionResult SkapaForetag()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult SkapaForetag(annonsorDetails annonsor)
+        {
+            annonsorMethods.createAnnonsor(annonsor, out string errormsg);
+            return RedirectToAction("ValjKundTyp");
         }
     }
 }
