@@ -90,13 +90,33 @@ namespace Annonssystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult valjTyp(string kundTyp, string prenumerantId)
+        public async Task<IActionResult> valjTyp(string kundTyp, string prenumerantId)
         {
             if (kundTyp == "Prenumerant")
             {
+                if (string.IsNullOrWhiteSpace(prenumerantId))
+                {
+                    ViewBag.ErrorMessage = "Du måste skriva ett prenumerantnummer";
+                    return View("ValjKundTyp");
+                }
+
+ 
+                HttpClient httpClient = new HttpClient();
+                httpClient.BaseAddress = new Uri("http://localhost:5072/");
+                httpClient.DefaultRequestHeaders.Accept.Clear();
+                httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response = await httpClient.GetAsync($"Prenumeranter/prenumerant/{prenumerantId}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    ViewBag.ErrorMessage = "Ej prenumerant";
+                    return View("ValjKundTyp");
+                }
+
                 return RedirectToAction("SkapaAnnons", new { preNr = prenumerantId });
             }
-            else if (kundTyp == "Foretag")
+            else if (kundTyp == "Företag")
             {
                 return RedirectToAction("SkapaForetag");
             }
@@ -120,7 +140,22 @@ namespace Annonssystem.Controllers
                 annonsorMethods.createAnnonsor(annonsor, out string createErrormsg);
             }
             
-            return RedirectToAction("ValjKundTyp", new {ornNr = annonsor.an_orgNr});
+            return RedirectToAction("SkapaAnnons", new {ornNr = annonsor.an_orgNr});
         }
+
+        [HttpGet]
+        public IActionResult SkapaAnnons()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SkapaAnnons(adDetails ad, out string errormsg)
+        {
+            adMethods.SkapaAnnons(ad, out errormsg);
+
+            return RedirectToAction("VisaAnnonserAsync");
+
+        }   
     }
 }

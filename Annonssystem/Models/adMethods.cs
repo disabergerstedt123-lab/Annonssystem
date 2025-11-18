@@ -74,5 +74,39 @@ namespace Annonssystem.Models
                 }
             }
         }
+
+        // KOLLA UPP VAD FAN SELECT SCOPE_IDENTITY() GÖR??? Den autolades till av VS. Kanske tar ut bara en av prenr eller orgnr baserat på något? men identity idk
+        public adDetails SkapaAnnons(adDetails ad, out string errormsg)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(_connectionstring))
+            {
+                String sqlQuery = "INSERT INTO tbl_ads (ad_rubrik, ad_innehall, ad_pris, ad_annonsPris, ad_pr_preNr, ad_an_orgNr) " +
+                                  "VALUES (@rubrik, @innehall, @pris, @annonsPris, @pr_preNr, @an_orgNr); " +
+                                  "SELECT SCOPE_IDENTITY();";
+
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@rubrik", ad.ad_rubrik);
+                sqlCommand.Parameters.AddWithValue("@innehall", ad.ad_innehall);
+                sqlCommand.Parameters.AddWithValue("@pris", ad.ad_pris);
+                sqlCommand.Parameters.AddWithValue("@annonsPris", ad.ad_annonsPris);
+                sqlCommand.Parameters.AddWithValue("@pr_preNr", (object?)ad.ad_pr_preNr ?? DBNull.Value);
+                sqlCommand.Parameters.AddWithValue("@an_orgNr", (object?)ad.ad_an_orgNr ?? DBNull.Value);
+                try
+                {
+                    sqlConnection.Open();
+                    object result = sqlCommand.ExecuteScalar();
+                    ad.ad_id = Convert.ToInt32(result);
+                    errormsg = "";
+                    return ad;
+                }
+                catch (Exception ex)
+                {
+                    errormsg = ex.Message;
+                    return ad;
+                }
+            }
+        }
+
+
     }
 }

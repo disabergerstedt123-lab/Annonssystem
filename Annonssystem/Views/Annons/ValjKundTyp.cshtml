@@ -36,6 +36,11 @@
     </div>
 
     <br /><br />
-
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div style="color: red; margin-bottom: 10px;">
+            @ViewBag.ErrorMessage
+        </div>
+    }
     <button type="submit">Gå vidare</button>
 </form>
