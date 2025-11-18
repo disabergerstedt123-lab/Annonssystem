@@ -116,7 +116,7 @@ namespace Annonssystem.Controllers
 
                 return RedirectToAction("SkapaAnnons", new { preNr = prenumerantId });
             }
-            else if (kundTyp == "Företag")
+            else if (kundTyp == "Foretag")
             {
                 return RedirectToAction("SkapaForetag");
             }
@@ -140,21 +140,27 @@ namespace Annonssystem.Controllers
                 annonsorMethods.createAnnonsor(annonsor, out string createErrormsg);
             }
             
-            return RedirectToAction("SkapaAnnons", new {ornNr = annonsor.an_orgNr});
+            return RedirectToAction("SkapaAnnons", new {orgNr = annonsor.an_orgNr});
         }
-
+        
         [HttpGet]
-        public IActionResult SkapaAnnons()
+        public IActionResult SkapaAnnons(int? preNr, int? orgNr)
         {
-            return View();
+            var adNr = new adDetails
+            {
+                ad_pr_preNr = preNr,
+                ad_an_orgNr = orgNr
+            };
+            return View(adNr);
         }
 
         [HttpPost]
-        public IActionResult SkapaAnnons(adDetails ad, out string errormsg)
+        public IActionResult SkapaAnnons(adDetails ad)
         {
-            adMethods.SkapaAnnons(ad, out errormsg);
+            string errormsg;
+            adMethods.SkapaAnnons(ad,out errormsg);
 
-            return RedirectToAction("VisaAnnonserAsync");
+            return RedirectToAction("VisaAnnonser");
 
         }   
     }
