@@ -23,7 +23,7 @@
     <p>Telefonnummer : @ViewBag.Prenumerant.pr_teleNr</p>
     <p>Adress : @ViewBag.Prenumerant.pr_utAdress, @ViewBag.Prenumerant.pr_postNr @ViewBag.Prenumerant.pr_ort</p>
 
-    <button type="button" asp-action="EditPrenumerant">Edit</button>
+    <a asp-action="EditPrenumerant" asp-route-preNr="@ViewBag.Prenumerant.pr_preNr" class="btn btn-secondary">Edit</a>
 }
 
 <br />

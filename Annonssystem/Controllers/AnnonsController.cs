@@ -189,9 +189,23 @@ namespace Annonssystem.Controllers
         }   
 
         [HttpGet]
-        public IActionResult EditPrenumerant(int preNr)
+        public async Task<IActionResult> EditPrenumerant(int preNr)
         {
-            return View();
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("http://localhost:5072/");
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+            HttpResponseMessage response = await httpClient.GetAsync($"Prenumeranter/prenumerant/{preNr}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                PrenumerantDetails prenumerant = JsonConvert.DeserializeObject<PrenumerantDetails>(apiResponse);
+                return View(prenumerant);
+            }
+
+            return RedirectToAction("ValjKundTyp");
         }
     }
 }
