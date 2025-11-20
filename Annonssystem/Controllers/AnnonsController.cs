@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 
-//HEJ DISA
 namespace Annonssystem.Controllers
 {
     public class AnnonsController : Controller
@@ -125,22 +124,25 @@ namespace Annonssystem.Controllers
                 return RedirectToAction("ValjKundTyp");
             }
         }
+
         [HttpGet]
         public IActionResult SkapaForetag()
         {
             return View();
         }
+
         [HttpPost]
         public IActionResult SkapaForetag(annonsorDetails annonsor)
         {
             annonsorDetails annonsorFinns = annonsorMethods.GetOneAnnonsor(annonsor.an_orgNr, out string errormsg);
 
-            if(annonsorFinns == null)
+            if(annonsorFinns.an_orgNr == 0)
             {
-                annonsorMethods.createAnnonsor(annonsor, out string createErrormsg);
+                annonsorMethods.createAnnonsor(annonsor, out string CreateErrormsg);
             }
             
-            return RedirectToAction("SkapaAnnons", new {orgNr = annonsor.an_orgNr});
+
+                return RedirectToAction("SkapaAnnons", new { orgNr = annonsor.an_orgNr });
         }
         
         [HttpGet]
@@ -151,6 +153,28 @@ namespace Annonssystem.Controllers
                 ad_pr_preNr = preNr,
                 ad_an_orgNr = orgNr
             };
+
+            annonsorDetails annonsor = new annonsorDetails();
+            if (orgNr != null)
+            {
+                annonsor = annonsorMethods.GetOneAnnonsor(orgNr.Value, out string errormsg);
+                ViewBag.Annonsor = annonsor;
+            }
+            else if (preNr != null)
+            {
+                HttpClient httpClient = new HttpClient();
+                httpClient.BaseAddress = new Uri("http://localhost:5072/");
+                httpClient.DefaultRequestHeaders.Accept.Clear();
+                httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = httpClient.GetAsync($"Prenumeranter/prenumerant/{preNr}").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string apiResponse = response.Content.ReadAsStringAsync().Result;
+                    PrenumerantDetails prenumerant = JsonConvert.DeserializeObject<PrenumerantDetails>(apiResponse);
+                    ViewBag.Prenumerant = prenumerant;
+                }
+            }
+
             return View(adNr);
         }
 
@@ -163,5 +187,11 @@ namespace Annonssystem.Controllers
             return RedirectToAction("VisaAnnonser");
 
         }   
+
+        [HttpGet]
+        public IActionResult EditPrenumerant(int preNr)
+        {
+            return View();
+        }
     }
 }
