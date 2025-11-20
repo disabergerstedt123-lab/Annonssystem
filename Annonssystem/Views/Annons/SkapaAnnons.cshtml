@@ -37,35 +37,47 @@
         <form asp-action="SkapaAnnons">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ad_rubrik" class="control-label"></label>
+                <label asp-for="ad_rubrik" class="control-label"> Rubrik </label>
                 <input asp-for="ad_rubrik" class="form-control" />
                 <span asp-validation-for="ad_rubrik" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ad_innehall" class="control-label"></label>
+                <label asp-for="ad_innehall" class="control-label"> Innehåll </label>
                 <input asp-for="ad_innehall" class="form-control" />
                 <span asp-validation-for="ad_innehall" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ad_pris" class="control-label"></label>
+                <label asp-for="ad_pris" class="control-label"> Pris </label>
                 <input asp-for="ad_pris" class="form-control" />
                 <span asp-validation-for="ad_pris" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ad_annonsPris" class="control-label"></label>
-                <input asp-for="ad_annonsPris" class="form-control" />
-                <span asp-validation-for="ad_annonsPris" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ad_pr_preNr" class="control-label"></label>
-                <input asp-for="ad_pr_preNr" class="form-control" />
-                <span asp-validation-for="ad_pr_preNr" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ad_an_orgNr" class="control-label"></label>
-                <input asp-for="ad_an_orgNr" class="form-control" />
-                <span asp-validation-for="ad_an_orgNr" class="text-danger"></span>
-            </div>
+            
+            @if(ViewBag.Prenumerant != null)
+            {
+                <div class="form-group">
+                    <label asp-for="ad_annonsPris" class="control-label"> Annonspris </label>
+                    <input asp-for="ad_annonsPris" type="hidden" />
+                    <p class="form-control-static">0</p>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ad_pr_preNr" class="control-label"> Prenumerationsnummer </label>
+                    <input asp-for="ad_pr_preNr" type="hidden" />
+                    <p class="form-control-static">@ViewBag.Prenumerant.pr_preNr</p>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="ad_annonsPris" class="control-label"> Annonspris </label>
+                    <input asp-for="ad_annonsPris" type="hidden" />
+                    <p class="form-control-static">40</p>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ad_an_orgNr" class="control-label"> Organisationsnummer </label>
+                    <input asp-for="ad_an_orgNr" type="hidden" />
+                    <p class="form-control-static">@ViewBag.Annonsor.an_orgNr</p>
+                </div>
+            }
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

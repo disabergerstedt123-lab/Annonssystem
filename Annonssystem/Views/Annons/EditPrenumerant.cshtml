@@ -4,41 +4,41 @@
     ViewData["Title"] = "EditPrenumerant";
 }
 
-<h1>EditPrenumerant</h1>
+<h1>Edit Prenumerant</h1>
 
-<h4>PrenumerantDetails</h4>
+<h4>Prenumerant</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="EditPrenumerant">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="pr_preNr" class="control-label"></label>
-                <input asp-for="pr_preNr" class="form-control" />
-                <span asp-validation-for="pr_preNr" class="text-danger"></span>
+                <label asp-for="pr_preNr" class="control-label"> Prenumerationsnummer </label>
+                <input asp-for="pr_preNr" type="hidden" />
+                <p class="form-control-static">@Model.pr_preNr</p>
             </div>
             <div class="form-group">
-                <label asp-for="pr_namn" class="control-label"></label>
+                <label asp-for="pr_namn" class="control-label"> Namn </label>
                 <input asp-for="pr_namn" class="form-control" />
                 <span asp-validation-for="pr_namn" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="pr_teleNr" class="control-label"></label>
+                <label asp-for="pr_teleNr" class="control-label"> Telefonnummer </label>
                 <input asp-for="pr_teleNr" class="form-control" />
                 <span asp-validation-for="pr_teleNr" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="pr_utAdress" class="control-label"></label>
+                <label asp-for="pr_utAdress" class="control-label"> Utdelningsadress </label>
                 <input asp-for="pr_utAdress" class="form-control" />
                 <span asp-validation-for="pr_utAdress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="pr_postNr" class="control-label"></label>
+                <label asp-for="pr_postNr" class="control-label"> Postnummer </label>
                 <input asp-for="pr_postNr" class="form-control" />
                 <span asp-validation-for="pr_postNr" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="pr_ort" class="control-label"></label>
+                <label asp-for="pr_ort" class="control-label"> Postort </label>
                 <input asp-for="pr_ort" class="form-control" />
                 <span asp-validation-for="pr_ort" class="text-danger"></span>
             </div>
@@ -50,7 +50,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="SkapaAnnons" asp-route-preNr="@Model.pr_preNr">Back to List</a>
 </div>
 
 @section Scripts {

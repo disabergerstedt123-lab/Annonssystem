@@ -99,7 +99,7 @@ namespace Annonssystem.Controllers
                     return View("ValjKundTyp");
                 }
 
- 
+
                 HttpClient httpClient = new HttpClient();
                 httpClient.BaseAddress = new Uri("http://localhost:5072/");
                 httpClient.DefaultRequestHeaders.Accept.Clear();
@@ -136,15 +136,15 @@ namespace Annonssystem.Controllers
         {
             annonsorDetails annonsorFinns = annonsorMethods.GetOneAnnonsor(annonsor.an_orgNr, out string errormsg);
 
-            if(annonsorFinns.an_orgNr == 0)
+            if (annonsorFinns.an_orgNr == 0)
             {
                 annonsorMethods.createAnnonsor(annonsor, out string CreateErrormsg);
             }
-            
 
-                return RedirectToAction("SkapaAnnons", new { orgNr = annonsor.an_orgNr });
+
+            return RedirectToAction("SkapaAnnons", new { orgNr = annonsor.an_orgNr });
         }
-        
+
         [HttpGet]
         public IActionResult SkapaAnnons(int? preNr, int? orgNr)
         {
@@ -182,11 +182,11 @@ namespace Annonssystem.Controllers
         public IActionResult SkapaAnnons(adDetails ad)
         {
             string errormsg;
-            adMethods.SkapaAnnons(ad,out errormsg);
+            adMethods.SkapaAnnons(ad, out errormsg);
 
             return RedirectToAction("VisaAnnonser");
 
-        }   
+        }
 
         [HttpGet]
         public async Task<IActionResult> EditPrenumerant(int preNr)
@@ -205,7 +205,24 @@ namespace Annonssystem.Controllers
                 return View(prenumerant);
             }
 
-            return RedirectToAction("ValjKundTyp");
+            return RedirectToAction("SkapaAnnons", new { preNr = preNr });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPrenumerant(PrenumerantDetails prenumerant)
+        {
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("http://localhost:5072/");
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            StringContent content = new StringContent(JsonConvert.SerializeObject(prenumerant), System.Text.Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await httpClient.PutAsync($"Prenumeranter/prenumerant/{prenumerant.pr_preNr}", content);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("SkapaAnnons", new {preNr = prenumerant.pr_preNr});
+            }
+            ViewBag.ErrorMessage = "Kunde inte uppdatera prenumerant.";
+            return View(prenumerant);
         }
     }
 }
