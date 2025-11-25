@@ -148,17 +148,32 @@ namespace Annonssystem.Controllers
         [HttpGet]
         public IActionResult SkapaAnnons(int? preNr, int? orgNr)
         {
-            var adNr = new adDetails
+            var adNr = new adDetails();
+            
+
+            if (preNr != null)
             {
-                ad_pr_preNr = preNr,
-                ad_an_orgNr = orgNr
-            };
+                adNr.ad_annonsPris = 0;
+
+                adNr.ad_pr_preNr = preNr;
+                
+
+            }
+            else if (orgNr != null)
+            {
+
+                adNr.ad_annonsPris = 40;
+                adNr.ad_an_orgNr = orgNr;
+                
+            }
 
             annonsorDetails annonsor = new annonsorDetails();
             if (orgNr != null)
             {
                 annonsor = annonsorMethods.GetOneAnnonsor(orgNr.Value, out string errormsg);
                 ViewBag.Annonsor = annonsor;
+                
+               
             }
             else if (preNr != null)
             {
@@ -172,6 +187,7 @@ namespace Annonssystem.Controllers
                     string apiResponse = response.Content.ReadAsStringAsync().Result;
                     PrenumerantDetails prenumerant = JsonConvert.DeserializeObject<PrenumerantDetails>(apiResponse);
                     ViewBag.Prenumerant = prenumerant;
+                    
                 }
             }
 
